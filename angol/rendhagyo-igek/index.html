@@ -1,0 +1,765 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rendhagyó igék</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!--
+  ===================== VERB DATABASE =====================
+  One verb per line, columns separated by TAB:
+  infinitive  past_simple  past_participle  hungarian
+  Alternatives are separated by " / ". Use "-" when a form does not exist.
+  Add new lines here to extend the game — no other change needed.
+-->
+<script type="text/tab-separated-values" id="verb-data">
+infinitive	past_simple	past_participle	hungarian
+be	was / were	been	létezik / lenni
+beat	beat	beaten	ütni
+become	became	become	válik
+begin	began	begun	kezd
+bite	bit	bitten	megharapni
+blow	blew	blown	fújni
+break	broke	broken	törni
+bring	brought	brought	hozni
+burn	burnt / burned	burnt / burned	égni
+build	built	built	építeni
+buy	bought	bought	venni
+can	could	-	tudni
+catch	caught	caught	elkapni
+choose	chose	chosen	választani
+come	came	come	jönni
+cost	cost	cost	kerül
+cut	cut	cut	vágni
+do	did	done	csinálni
+draw	drew	drawn	rajzolni
+dream	dreamt / dreamed	dreamt / dreamed	álmodni
+drink	drank	drunk	inni
+drive	drove	driven	vezetni
+eat	ate	eaten	enni
+fall	fell	fallen	elesni
+feed	fed	fed	etetni
+feel	felt	felt	érezni
+fight	fought	fought	harcolni
+find	found	found	találni
+fly	flew	flown	repülni
+forget	forgot	forgotten	elfelejteni
+forgive	forgave	forgiven	megbocsátani
+freeze	froze	frozen	fagyasztani
+get	got	got	megszerez
+give	gave	given	adni
+go	went	gone / been	menni
+grow	grew	grown	nő
+hang	hung	hung	lógni
+have	had	had	birtokolni / van v.milye
+hear	heard	heard	hallani
+hide	hid	hidden	elbújik
+hit	hit	hit	megütni
+hold	held	held	tartani
+hurt	hurt	hurt	bántani
+keep	kept	kept	tartani
+know	knew	known	tudni
+lead	led	led	vezetni
+learn	learnt / learned	learnt / learned	tanulni
+leave	left	left	elhagyni
+lend	lent	lent	kölcsönadni
+let	let	let	hagyni
+lie	lay	lain	feküdni
+lose	lost	lost	veszíteni
+make	made	made	készíteni
+meet	met	met	találkozni
+pay	paid	paid	fizetni
+put	put	put	tenni
+read	read	read	olvasni
+ride	rode	ridden	lovagolni / utazni
+ring	rang	rung	csörög
+run	ran	run	futni
+say	said	said	mondani
+see	saw	seen	látni
+sell	sold	sold	eladni
+send	sent	sent	küldeni
+set	set	set	beállítani
+shake	shook	shaken	megráz
+shine	shone	shone	csillog
+show	showed	shown	megmutat
+shut	shut	shut	becsuk
+sing	sang	sung	énekelni
+sit	sat	sat	leülni
+sleep	slept	slept	aludni
+speak	spoke	spoken	beszélni
+spell	spelt / spelled	spelt / spelled	betűz
+spend	spent	spent	költeni / tölteni
+stand	stood	stood	állni
+steal	stole	stolen	lopni
+swim	swam	swum	úszni
+take	took	taken	venni / fogni
+teach	taught	taught	tanítani
+tell	told	told	mondani
+think	thought	thought	gondolni
+throw	threw	thrown	dobni
+understand	understood	understood	megérteni
+wake	woke	woken	ébredni
+wear	wore	worn	viselni
+win	won	won	megnyerni
+write	wrote	written	írni
+</script>
+
+<style>
+:root{
+  --paper:#f2ede3;
+  --paper-2:#e9e2d4;
+  --card:#fffcf5;
+  --ink:#1c1a17;
+  --ink-2:#5b5549;
+  --ink-3:#8f8778;
+  --line:#d8cfbd;
+  --rule:#c9d6e3;
+  --margin:#e4572e;
+  --accent:#e4572e;
+  --a:#2f7d4f; --a-bg:#e3f1e7;
+  --b:#b7790a; --b-bg:#fbefd2;
+  --c:#c2412d; --c-bg:#f9e0db;
+  --radius:14px;
+  --shadow:0 1px 0 rgba(0,0,0,.04), 0 10px 30px -12px rgba(40,30,10,.25);
+  --hard:5px 5px 0 var(--ink);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:var(--paper);
+  background-image:radial-gradient(rgba(28,26,23,.08) 1px, transparent 1.2px);
+  background-size:22px 22px;
+  color:var(--ink);
+  font:16px/1.5 "IBM Plex Sans",system-ui,sans-serif;
+  min-height:100vh;
+}
+button,input{font:inherit;color:inherit}
+.wrap{max-width:1040px;margin:0 auto;padding:28px 16px 80px}
+
+/* ---------- header ---------- */
+.top{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:36px}
+.brand{display:flex;align-items:center;gap:14px}
+.mark{
+  width:48px;height:48px;border:2px solid var(--ink);border-radius:10px;background:var(--accent);
+  display:grid;place-items:center;font:800 22px/1 "Fraunces",serif;color:var(--card);
+  box-shadow:3px 3px 0 var(--ink);transform:rotate(-4deg);
+}
+h1{font:800 32px/1 "Fraunces",serif;letter-spacing:-.02em;margin:0}
+.sub{font:12px/1.4 "IBM Plex Mono",monospace;color:var(--ink-2);margin-top:6px;letter-spacing:.02em}
+.sub .home{color:var(--ink);text-decoration:none;border-bottom:1.5px solid var(--accent)}
+.sub .home:hover{color:var(--accent)}
+
+.modes{display:flex;gap:4px;padding:4px;background:var(--card);border:2px solid var(--ink);border-radius:12px;box-shadow:var(--hard)}
+.modes button{
+  border:0;background:transparent;padding:9px 14px;border-radius:8px;cursor:pointer;font-weight:500;
+  display:flex;gap:8px;align-items:center;transition:background .2s,color .2s;
+}
+.modes button .n{font:11px "IBM Plex Mono",monospace;opacity:.6}
+.modes button:hover{background:var(--paper-2)}
+.modes button.on{background:var(--ink);color:var(--card)}
+
+section[data-view]{display:none;animation:fade .35s ease}
+section[data-view].on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.intro{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.intro h2{font:600 24px/1.2 "Fraunces",serif;margin:0}
+.intro p{margin:4px 0 0;color:var(--ink-2);max-width:560px}
+
+/* ---------- buttons ---------- */
+.btn{
+  border:2px solid var(--ink);background:var(--card);padding:10px 18px;border-radius:10px;cursor:pointer;
+  font-weight:600;box-shadow:3px 3px 0 var(--ink);transition:transform .12s,box-shadow .12s,background .2s;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+.btn:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+.btn.primary{background:var(--accent);color:#fff}
+.btn.dark{background:var(--ink);color:var(--card)}
+.btn.ghost{box-shadow:none;border-color:var(--line);background:transparent}
+.btn.ghost:hover{border-color:var(--ink)}
+.btn.icon{padding:10px 14px}
+.btn[aria-pressed="true"]{background:var(--ink);color:var(--card)}
+kbd{font:11px "IBM Plex Mono",monospace;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:1px 5px;background:var(--card)}
+
+/* ---------- card ---------- */
+.card{position:relative;perspective:1400px;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+.card-lift{width:100%;height:100%}
+.card-inner{
+  position:relative;width:100%;height:100%;transform-style:preserve-3d;
+  transition:transform .75s cubic-bezier(.3,1.35,.45,1);
+}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.card.lift .card-lift{animation:lift .75s ease}
+@keyframes lift{0%,100%{transform:none}45%{transform:translateY(-14px) scale(1.035)}}
+.face{
+  position:absolute;inset:0;border-radius:var(--radius);border:2px solid var(--ink);
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;
+  box-shadow:var(--hard);
+}
+.front{
+  background:
+    linear-gradient(var(--margin),var(--margin)) 0 46px/100% 2px no-repeat,
+    repeating-linear-gradient(to bottom,transparent 0 31px,var(--rule) 31px 32px) 0 46px/100% 100% no-repeat,
+    var(--card);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:56px 20px 20px;text-align:center;
+}
+.front .tag,.back .tag{position:absolute;top:13px;left:16px;font:500 11px "IBM Plex Mono",monospace;letter-spacing:.12em;color:var(--ink-3)}
+.front .num{position:absolute;top:13px;right:16px;font:500 11px "IBM Plex Mono",monospace;color:var(--ink-3)}
+.front .word{font:600 clamp(26px,5vw,40px)/1.15 "Fraunces",serif;letter-spacing:-.01em;background:var(--card);padding:0 8px}
+.front .hint{position:absolute;bottom:12px;font:11px "IBM Plex Mono",monospace;color:var(--ink-3)}
+.back{
+  transform:rotateY(180deg);background:var(--ink);color:var(--card);
+  display:flex;flex-direction:column;justify-content:center;padding:44px 22px 20px;gap:4px;
+}
+.back .tag{color:#a39c8e}
+.back .hu{position:absolute;top:11px;right:16px;font:italic 400 14px "Fraunces",serif;color:#cfc7b6;max-width:60%;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.form-row{display:grid;grid-template-columns:28px 1fr;align-items:baseline;gap:10px;padding:6px 0;border-bottom:1px dashed #4a453d}
+.form-row:last-child{border-bottom:0}
+.form-row .k{font:500 11px "IBM Plex Mono",monospace;color:var(--accent)}
+.form-row .v{font:600 clamp(20px,3.4vw,26px)/1.2 "Fraunces",serif}
+.form-row[data-g] .k{color:#fff;border-radius:4px;text-align:center;padding:1px 0}
+.form-row[data-g="A"] .k{background:var(--a)}
+.form-row[data-g="B"] .k{background:var(--b)}
+.form-row[data-g="C"] .k{background:var(--c)}
+
+/* card swapping */
+.card.out-next{animation:outNext .22s ease-in forwards}
+.card.out-prev{animation:outPrev .22s ease-in forwards}
+.card.in-next{animation:inNext .42s cubic-bezier(.2,1.2,.4,1)}
+.card.in-prev{animation:inPrev .42s cubic-bezier(.2,1.2,.4,1)}
+@keyframes outNext{to{opacity:0;transform:translateX(-60px) rotate(-5deg)}}
+@keyframes outPrev{to{opacity:0;transform:translateX(60px) rotate(5deg)}}
+@keyframes inNext{from{opacity:0;transform:translateX(60px) rotate(5deg)}to{opacity:1;transform:none}}
+@keyframes inPrev{from{opacity:0;transform:translateX(-60px) rotate(-5deg)}to{opacity:1;transform:none}}
+.noanim .card-inner{transition:none!important}
+
+/* ---------- learn ---------- */
+.learn-stage{display:flex;flex-direction:column;align-items:center;gap:28px;padding-top:10px}
+.deck{position:relative;width:min(460px,100%);height:290px}
+.deck::before,.deck::after{
+  content:"";position:absolute;inset:0;border:2px solid var(--ink);border-radius:var(--radius);background:var(--card);
+}
+.deck::before{transform:rotate(3deg) translate(8px,6px);opacity:.55}
+.deck::after{transform:rotate(-2deg) translate(-6px,4px);opacity:.8}
+.deck .card{position:absolute;inset:0;z-index:1}
+.controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center}
+.counter{font:500 14px "IBM Plex Mono",monospace;min-width:84px;text-align:center}
+.progress{width:min(460px,100%);height:4px;background:var(--paper-2);border-radius:4px;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--ink);transition:width .35s ease}
+.keys{font-size:13px;color:var(--ink-2);display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+
+/* ---------- practice ---------- */
+.tally{display:flex;gap:8px;align-items:center;font:500 13px "IBM Plex Mono",monospace}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;border:1.5px solid currentColor}
+.chip.A{color:var(--a);background:var(--a-bg)}
+.chip.B{color:var(--b);background:var(--b-bg)}
+.chip.C{color:var(--c);background:var(--c-bg)}
+.practice{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center}
+.practice .card{height:280px}
+.fields{display:flex;flex-direction:column;gap:14px}
+.field label{display:flex;justify-content:space-between;font:500 12px "IBM Plex Mono",monospace;color:var(--ink-2);margin-bottom:6px;letter-spacing:.04em}
+.inp{position:relative}
+.inp input{
+  width:100%;padding:12px 48px 12px 14px;border:2px solid var(--ink);border-radius:10px;background:var(--card);
+  font:500 18px "IBM Plex Sans",sans-serif;outline:none;transition:border-color .2s,background .2s,box-shadow .2s;
+}
+.inp input:focus{box-shadow:0 0 0 4px rgba(228,87,46,.18);border-color:var(--accent)}
+.inp input:disabled{opacity:1}
+.inp .badge{
+  position:absolute;right:10px;top:50%;width:28px;height:28px;margin-top:-14px;border-radius:7px;
+  display:grid;place-items:center;font:700 14px "IBM Plex Mono",monospace;color:#fff;
+  transform:scale(0) rotate(-30deg);transition:transform .35s cubic-bezier(.3,1.6,.5,1);
+}
+.inp[data-g] .badge{transform:none}
+.inp[data-g="A"] input{border-color:var(--a);background:var(--a-bg)}
+.inp[data-g="B"] input{border-color:var(--b);background:var(--b-bg)}
+.inp[data-g="C"] input{border-color:var(--c);background:var(--c-bg)}
+.inp[data-g="A"] .badge{background:var(--a)}
+.inp[data-g="B"] .badge{background:var(--b)}
+.inp[data-g="C"] .badge{background:var(--c)}
+.fix{font-size:13px;color:var(--ink-2);margin-top:5px;min-height:0;opacity:0;transform:translateY(-4px);transition:all .25s}
+.fix.show{opacity:1;transform:none}
+.fix b{font-family:"Fraunces",serif;font-size:15px;color:var(--ink)}
+.row-actions{display:flex;gap:10px;align-items:center;margin-top:6px;flex-wrap:wrap}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--ink-2);margin-top:28px;padding-top:16px;border-top:1px dashed var(--line)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.dot{width:18px;height:18px;border-radius:5px;display:inline-grid;place-items:center;color:#fff;font:700 11px "IBM Plex Mono",monospace}
+.dot.A{background:var(--a)}.dot.B{background:var(--b)}.dot.C{background:var(--c)}
+
+/* ---------- test ---------- */
+.setup{
+  background:var(--card);border:2px solid var(--ink);border-radius:var(--radius);box-shadow:var(--hard);
+  padding:28px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+}
+.setup h3{font:600 20px "Fraunces",serif;margin:0 0 4px}
+.setup p{margin:0;color:var(--ink-2)}
+.seg{display:flex;gap:8px;align-items:center}
+.test-list{display:flex;flex-direction:column;gap:14px}
+.test-row{
+  display:grid;grid-template-columns:34px 200px repeat(3,minmax(0,1fr));gap:12px;align-items:center;
+  animation:rowIn .45s cubic-bezier(.2,1.1,.4,1) backwards;
+}
+@keyframes rowIn{from{opacity:0;transform:translateY(12px)}}
+.test-row .idx{font:500 13px "IBM Plex Mono",monospace;color:var(--ink-3);text-align:right}
+.test-row .card{height:86px;cursor:default}
+.test-row .front{padding:14px 10px 10px;background:var(--card)}
+.test-row .front .word{font-size:20px}
+.test-row .back{padding:8px 12px;gap:0;flex-direction:row;align-items:center;justify-content:space-around}
+.test-row .back .mini{text-align:center;font:600 14px/1.2 "Fraunces",serif}
+.test-row .back .mini small{display:block;font:500 9px "IBM Plex Mono",monospace;color:var(--accent);margin-bottom:2px}
+.test-row .face{box-shadow:3px 3px 0 var(--ink)}
+.test-row .inp input{font-size:16px;padding:10px 40px 10px 12px}
+.test-row .inp .badge{width:24px;height:24px;margin-top:-12px;font-size:12px;right:8px}
+.test-head{display:grid;grid-template-columns:34px 200px repeat(3,minmax(0,1fr));gap:12px;font:500 11px "IBM Plex Mono",monospace;color:var(--ink-3);letter-spacing:.08em;padding:0 0 4px}
+.submitbar{
+  position:sticky;bottom:16px;margin-top:26px;background:var(--ink);color:var(--card);border-radius:12px;
+  padding:12px 12px 12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:var(--shadow);
+}
+.submitbar .btn{border-color:var(--card);box-shadow:3px 3px 0 var(--accent)}
+.fill{font:500 13px "IBM Plex Mono",monospace;color:#cfc7b6}
+.result{
+  display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center;margin-bottom:26px;
+  background:var(--card);border:2px solid var(--ink);border-radius:var(--radius);box-shadow:var(--hard);padding:22px 26px;
+  animation:rowIn .5s cubic-bezier(.2,1.1,.4,1);
+}
+.score{font:800 56px/1 "Fraunces",serif;letter-spacing:-.03em}
+.score small{font-size:22px;color:var(--ink-3)}
+.verdict{font:600 18px "Fraunces",serif;margin-bottom:10px}
+.bar{display:flex;height:12px;border-radius:6px;overflow:hidden;background:var(--paper-2);border:1.5px solid var(--ink)}
+.bar i{display:block;height:100%;width:0;transition:width .9s cubic-bezier(.2,.9,.3,1)}
+.bar .A{background:var(--a)}.bar .B{background:var(--b)}.bar .C{background:var(--c)}
+.result .tally{margin-top:10px}
+
+@media (max-width:760px){
+  h1{font-size:26px}
+  .modes{width:100%}
+  .modes button{flex:1;justify-content:center;padding:9px 6px;font-size:14px}
+  .modes button .n{display:none}
+  .practice{grid-template-columns:1fr;gap:24px}
+  .practice .card{height:220px}
+  .deck{height:240px}
+  .test-head{display:none}
+  .test-row{grid-template-columns:1fr 1fr 1fr;padding:14px;background:rgba(255,252,245,.6);border:1.5px dashed var(--line);border-radius:12px}
+  .test-row .idx{display:none}
+  .test-row .card{grid-column:1 / -1}
+  .result{grid-template-columns:1fr;gap:14px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="mark">V³</div>
+      <div>
+        <h1>Rendhagyó igék</h1>
+        <div class="sub"><a class="home" href="../../">← All games</a> · <span id="sub">Irregular English verbs</span></div>
+      </div>
+    </div>
+    <nav class="modes" role="tablist">
+      <button data-mode="learn" class="on"><span class="n">01</span>Flashcards</button>
+      <button data-mode="practice"><span class="n">02</span>Practice</button>
+      <button data-mode="test"><span class="n">03</span>Test</button>
+    </nav>
+  </header>
+
+  <!-- ============ 1. LEARN ============ -->
+  <section data-view="learn" class="on">
+    <div class="intro">
+      <div>
+        <h2>Flip through the deck</h2>
+        <p>Read the Hungarian word, say the three forms out loud, then flip the card to check.</p>
+      </div>
+    </div>
+    <div class="learn-stage">
+      <div class="deck"><div id="learnCard"></div></div>
+      <div class="progress"><i id="learnBar"></i></div>
+      <div class="controls">
+        <button class="btn icon" id="prevBtn" aria-label="Previous">←</button>
+        <div class="counter" id="learnCount">1 / 1</div>
+        <button class="btn icon" id="nextBtn" aria-label="Next">→</button>
+        <button class="btn ghost" id="shuffleBtn" aria-pressed="false">⤮ Shuffle</button>
+      </div>
+      <div class="keys"><span><kbd>Space</kbd> flip</span><span><kbd>←</kbd> <kbd>→</kbd> move</span></div>
+    </div>
+  </section>
+
+  <!-- ============ 2. PRACTICE ============ -->
+  <section data-view="practice">
+    <div class="intro">
+      <div>
+        <h2>Write the three forms</h2>
+        <p>Type the forms, then click the card (or press <kbd>Enter</kbd>) to flip and check.</p>
+      </div>
+      <div class="tally" id="pTally"></div>
+    </div>
+    <div class="practice">
+      <div id="pCard"></div>
+      <div>
+        <div class="fields" id="pFields"></div>
+        <div class="row-actions">
+          <button class="btn primary" id="pAction">Check</button>
+          <button class="btn ghost" id="pSkip">Skip</button>
+          <span class="counter" id="pCount"></span>
+        </div>
+      </div>
+    </div>
+    <div class="legend">
+      <span><i class="dot A">A</i> Correct</span>
+      <span><i class="dot B">B</i> Almost — small spelling mistake</span>
+      <span><i class="dot C">C</i> Wrong</span>
+    </div>
+  </section>
+
+  <!-- ============ 3. TEST ============ -->
+  <section data-view="test">
+    <div class="intro">
+      <div>
+        <h2>Test yourself</h2>
+        <p>Fill in every row. Nothing is checked until you hand it in — then all cards flip together.</p>
+      </div>
+    </div>
+    <div id="testSetup" class="setup">
+      <div>
+        <h3>How many verbs?</h3>
+        <p>Random verbs are picked from the list.</p>
+      </div>
+      <div class="seg">
+        <button class="btn" data-size="10" aria-pressed="true">10</button>
+        <button class="btn" data-size="20" aria-pressed="false">20</button>
+        <button class="btn primary" id="startTest">Start test →</button>
+      </div>
+    </div>
+    <div id="testRun" hidden>
+      <div id="testResult"></div>
+      <div class="test-head"><span></span><span>HUNGARIAN</span><span>V1 · INFINITIVE</span><span>V2 · PAST SIMPLE</span><span>V3 · PAST PARTICIPLE</span></div>
+      <div class="test-list" id="testList"></div>
+      <div class="submitbar">
+        <span class="fill" id="testFill"></span>
+        <div style="display:flex;gap:8px">
+          <button class="btn ghost" id="testQuit" style="color:var(--card);border-color:#5b5549">New test</button>
+          <button class="btn primary" id="testSubmit">Hand in ✓</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+/* ---------------- data ---------------- */
+const FORMS = [
+  { key: 'inf',  short: 'V1', label: 'Infinitive' },
+  { key: 'past', short: 'V2', label: 'Past simple' },
+  { key: 'pp',   short: 'V3', label: 'Past participle' },
+];
+
+function parseVerbs(text) {
+  return text.split(/\r?\n/)
+    .map(l => l.trim())
+    .filter(l => l && !/^infinitive\b/i.test(l))
+    .map(l => l.split(/\t+| {2,}/).map(s => s.trim()))
+    .filter(c => c.length >= 4)
+    .map(([inf, past, pp, ...hu]) => ({ inf, past, pp, hu: hu.join(' ') }));
+}
+const VERBS = parseVerbs(document.getElementById('verb-data').textContent);
+document.getElementById('sub').textContent = `Irregular English verbs · ${VERBS.length} words`;
+
+/* ---------------- helpers ---------------- */
+const $ = s => document.querySelector(s);
+const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const wait = ms => new Promise(r => setTimeout(r, ms));
+
+/* ---------------- grading ---------------- */
+const norm = s => s.normalize('NFKC').toLowerCase().replace(/[’`]/g, "'").replace(/\s+/g, ' ').trim();
+const variants = ans => ans.split('/').map(norm).filter(Boolean);
+const NONE = ['', '-', '–', '—', 'x', 'none', 'nincs'];
+
+// Optimal string alignment distance (Levenshtein + adjacent swaps)
+function dist(a, b) {
+  const d = Array.from({ length: a.length + 1 }, (_, i) => [i, ...Array(b.length).fill(0)]);
+  for (let j = 1; j <= b.length; j++) d[0][j] = j;
+  for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++) {
+    const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+    d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + cost);
+    if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
+  }
+  return d[a.length][b.length];
+}
+const tolerance = w => w.length >= 7 ? 2 : w.length >= 3 ? 1 : 0;
+
+/** Returns 'A' (correct), 'B' (small typo) or 'C' (wrong). */
+function grade(input, verb, key) {
+  const n = norm(input || '');
+  if (norm(verb[key]) === '-') return NONE.includes(n) ? 'A' : 'C';
+  if (!n) return 'C';
+  const ok = variants(verb[key]);
+  // other forms of the same verb (e.g. "began" where "begun" is expected) are wrong, not typos
+  const others = new Set(FORMS.filter(f => f.key !== key).flatMap(f => variants(verb[f.key])).filter(f => !ok.includes(f)));
+  let result = 'A';
+  for (const part of n.split('/').map(s => s.trim()).filter(Boolean)) {
+    if (ok.includes(part)) continue;
+    if (others.has(part)) return 'C';
+    if (ok.some(v => dist(part, v) <= tolerance(v))) result = 'B';
+    else return 'C';
+  }
+  return result;
+}
+
+/* ---------------- card component ---------------- */
+function cardHTML(verb, { num = '', hint = '', grades = null, mini = false } = {}) {
+  const back = mini
+    ? FORMS.map(f => `<div class="mini"><small>${f.short}</small>${esc(verb[f.key])}</div>`).join('')
+    : FORMS.map((f, i) => `<div class="form-row"${grades ? ` data-g="${grades[i]}"` : ''}><span class="k">${grades ? grades[i] : f.short}</span><span class="v">${esc(verb[f.key])}</span></div>`).join('');
+  return `
+    <div class="card-lift"><div class="card-inner">
+      <div class="face front">
+        <span class="tag">HU</span>${num ? `<span class="num">${num}</span>` : ''}
+        <div class="word">${esc(verb.hu)}</div>
+        ${hint ? `<div class="hint">${hint}</div>` : ''}
+      </div>
+      <div class="face back">
+        ${mini ? '' : `<span class="tag">EN</span><span class="hu">${esc(verb.hu)}</span>`}
+        ${back}
+      </div>
+    </div></div>`;
+}
+
+function flip(el, on) {
+  if (el.classList.contains('flipped') === on) return;
+  el.classList.toggle('flipped', on);
+  el.classList.remove('lift'); void el.offsetWidth; el.classList.add('lift');
+}
+
+/** Animate the card out, swap its contents, animate it back in (unflipped). */
+async function swapCard(el, html, dir = 'next') {
+  el.classList.remove('in-next', 'in-prev');
+  el.classList.add('out-' + dir);
+  await wait(210);
+  el.classList.add('noanim');
+  el.classList.remove('flipped', 'lift', 'out-' + dir);
+  el.innerHTML = html;
+  void el.offsetWidth;
+  el.classList.remove('noanim');
+  el.classList.add('in-' + dir);
+}
+
+/* ---------------- mode switching ---------------- */
+let mode = 'learn';
+document.querySelectorAll('.modes button').forEach(b => b.addEventListener('click', () => {
+  mode = b.dataset.mode;
+  document.querySelectorAll('.modes button').forEach(x => x.classList.toggle('on', x === b));
+  document.querySelectorAll('section[data-view]').forEach(s => s.classList.toggle('on', s.dataset.view === mode));
+  if (mode === 'practice' && !pState.checked) setTimeout(() => pFieldsEl.querySelector('input')?.focus(), 50);
+}));
+
+/* ================= 1. LEARN ================= */
+const learnEl = $('#learnCard');
+learnEl.className = 'card';
+let lOrder = VERBS.slice(), lIdx = 0;
+
+function learnRender(dir) {
+  const v = lOrder[lIdx];
+  const html = cardHTML(v, { num: `#${lIdx + 1}`, hint: 'click to flip' });
+  if (dir) swapCard(learnEl, html, dir); else learnEl.innerHTML = html;
+  $('#learnCount').textContent = `${lIdx + 1} / ${lOrder.length}`;
+  $('#learnBar').style.width = `${(lIdx + 1) / lOrder.length * 100}%`;
+}
+const learnMove = d => { lIdx = (lIdx + d + lOrder.length) % lOrder.length; learnRender(d > 0 ? 'next' : 'prev'); };
+learnEl.addEventListener('click', () => flip(learnEl, !learnEl.classList.contains('flipped')));
+$('#prevBtn').onclick = () => learnMove(-1);
+$('#nextBtn').onclick = () => learnMove(1);
+$('#shuffleBtn').onclick = e => {
+  const on = e.currentTarget.getAttribute('aria-pressed') !== 'true';
+  e.currentTarget.setAttribute('aria-pressed', on);
+  lOrder = on ? shuffle(VERBS) : VERBS.slice();
+  lIdx = 0; learnRender('next');
+};
+learnRender();
+
+/* ================= 2. PRACTICE ================= */
+const pCardEl = $('#pCard'), pFieldsEl = $('#pFields'), pAction = $('#pAction');
+pCardEl.className = 'card';
+const pState = { order: shuffle(VERBS), idx: 0, checked: false, tally: { A: 0, B: 0, C: 0 }, done: 0 };
+
+pFieldsEl.innerHTML = FORMS.map((f, i) => `
+  <div class="field">
+    <label for="p${i}"><span>${f.short} · ${f.label.toUpperCase()}</span></label>
+    <div class="inp"><input id="p${i}" autocomplete="off" autocapitalize="off" spellcheck="false"><span class="badge"></span></div>
+    <div class="fix"></div>
+  </div>`).join('');
+const pInputs = [...pFieldsEl.querySelectorAll('input')];
+
+function tallyHTML(t) {
+  return `<span class="chip A">A ${t.A}</span><span class="chip B">B ${t.B}</span><span class="chip C">C ${t.C}</span>`;
+}
+
+function pRender(animate) {
+  const v = pState.order[pState.idx];
+  const html = cardHTML(v, { num: `${pState.idx + 1}/${pState.order.length}`, hint: 'click to check' });
+  if (animate) swapCard(pCardEl, html, 'next'); else pCardEl.innerHTML = html;
+  pInputs.forEach(inp => { inp.value = ''; inp.disabled = false; inp.parentElement.removeAttribute('data-g'); inp.parentElement.querySelector('.badge').textContent = ''; });
+  pFieldsEl.querySelectorAll('.fix').forEach(f => { f.classList.remove('show'); f.innerHTML = ''; });
+  pState.checked = false;
+  pAction.textContent = 'Check';
+  $('#pSkip').hidden = false;
+  $('#pTally').innerHTML = tallyHTML(pState.tally);
+  $('#pCount').textContent = pState.done ? `${pState.done} done` : '';
+  if (mode === 'practice') pInputs[0].focus({ preventScroll: true });
+}
+
+function pCheck() {
+  if (pState.checked) return;
+  const v = pState.order[pState.idx];
+  const grades = FORMS.map((f, i) => grade(pInputs[i].value, v, f.key));
+  // put the graded rows on the back of the card, then flip
+  pCardEl.querySelector('.back').innerHTML =
+    `<span class="tag">EN</span><span class="hu">${esc(v.hu)}</span>` +
+    FORMS.map((f, i) => `<div class="form-row" data-g="${grades[i]}"><span class="k">${grades[i]}</span><span class="v">${esc(v[f.key])}</span></div>`).join('');
+  flip(pCardEl, true);
+  grades.forEach((g, i) => {
+    const box = pInputs[i].parentElement, fix = pFieldsEl.querySelectorAll('.fix')[i];
+    setTimeout(() => {
+      box.dataset.g = g;
+      box.querySelector('.badge').textContent = g;
+      if (g !== 'A') { fix.innerHTML = `Correct: <b>${esc(v[FORMS[i].key])}</b>`; fix.classList.add('show'); }
+    }, 250 + i * 120);
+    pInputs[i].disabled = true;
+    pState.tally[g]++;
+  });
+  pState.checked = true; pState.done++;
+  pAction.textContent = 'Next verb →';
+  $('#pSkip').hidden = true;
+  setTimeout(() => { $('#pTally').innerHTML = tallyHTML(pState.tally); $('#pCount').textContent = `${pState.done} done`; }, 650);
+  pAction.focus({ preventScroll: true });
+}
+
+function pNext() {
+  pState.idx++;
+  if (pState.idx >= pState.order.length) { pState.order = shuffle(VERBS); pState.idx = 0; }
+  pRender(true);
+}
+
+pAction.onclick = () => pState.checked ? pNext() : pCheck();
+$('#pSkip').onclick = pNext;
+pCardEl.addEventListener('click', () => pState.checked ? pNext() : pCheck());
+pInputs.forEach((inp, i) => inp.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  e.preventDefault();
+  if (i < pInputs.length - 1 && !pInputs[i + 1].value) pInputs[i + 1].focus();
+  else pCheck();
+}));
+pRender();
+
+/* ================= 3. TEST ================= */
+let tSize = 10, tVerbs = [], tDone = false;
+document.querySelectorAll('[data-size]').forEach(b => b.onclick = () => {
+  tSize = +b.dataset.size;
+  document.querySelectorAll('[data-size]').forEach(x => x.setAttribute('aria-pressed', x === b));
+});
+
+function testStart() {
+  tVerbs = shuffle(VERBS).slice(0, Math.min(tSize, VERBS.length));
+  tDone = false;
+  $('#testSetup').hidden = true;
+  $('#testRun').hidden = false;
+  $('#testResult').innerHTML = '';
+  $('#testSubmit').hidden = false;
+  $('#testList').innerHTML = tVerbs.map((v, r) => `
+    <div class="test-row" style="animation-delay:${r * 35}ms">
+      <span class="idx">${String(r + 1).padStart(2, '0')}</span>
+      <div class="card">${cardHTML(v, { mini: true })}</div>
+      ${FORMS.map((f, i) => `<div class="inp"><input data-r="${r}" data-i="${i}" placeholder="${f.short}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="${esc(v.hu)} ${f.label}"><span class="badge"></span></div>`).join('')}
+    </div>`).join('');
+  testFill();
+  $('#testList input').focus();
+}
+
+function testFill() {
+  const all = [...document.querySelectorAll('#testList input')];
+  $('#testFill').textContent = tDone ? 'Checked — scroll through your cards' : `${all.filter(i => i.value.trim()).length} / ${all.length} filled`;
+}
+
+async function testSubmit() {
+  if (tDone) return;
+  const empty = [...document.querySelectorAll('#testList input')].filter(i => !i.value.trim()).length;
+  if (empty && $('#testSubmit').dataset.confirm !== '1') {
+    $('#testSubmit').dataset.confirm = '1';
+    $('#testSubmit').textContent = `${empty} empty — hand in anyway?`;
+    return;
+  }
+  tDone = true;
+  $('#testSubmit').hidden = true;
+  const tally = { A: 0, B: 0, C: 0 };
+  const rows = [...document.querySelectorAll('.test-row')];
+  rows.forEach((row, r) => {
+    const v = tVerbs[r];
+    row.querySelectorAll('input').forEach((inp, i) => {
+      const g = grade(inp.value, v, FORMS[i].key);
+      tally[g]++;
+      inp.disabled = true;
+      if (g !== 'A') inp.title = `Correct: ${v[FORMS[i].key]}`;
+      setTimeout(() => { inp.parentElement.dataset.g = g; inp.parentElement.querySelector('.badge').textContent = g; }, r * 80 + 300 + i * 60);
+    });
+    setTimeout(() => flip(row.querySelector('.card'), true), r * 80);
+  });
+  testFill();
+
+  const total = tally.A + tally.B + tally.C;
+  const pct = Math.round((tally.A + tally.B * 0.5) / total * 100);
+  const verdict = pct >= 90 ? 'Excellent — nagyon ügyes!' : pct >= 70 ? 'Good work — szép munka!' : pct >= 50 ? 'Getting there — még egy kis gyakorlás.' : 'Keep practising — gyakorolj még!';
+  $('#testResult').innerHTML = `
+    <div class="result">
+      <div class="score"><span id="scoreNum">0</span><small>%</small></div>
+      <div>
+        <div class="verdict">${verdict}</div>
+        <div class="bar"><i class="A"></i><i class="B"></i><i class="C"></i></div>
+        <div class="tally">${tallyHTML(tally)}</div>
+      </div>
+      <button class="btn dark" id="again">Try again ↻</button>
+    </div>`;
+  $('#again').onclick = testStart;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    ['A', 'B', 'C'].forEach(k => $(`.bar .${k}`).style.width = `${tally[k] / total * 100}%`);
+  }));
+  const start = performance.now();
+  (function count(t) {
+    const p = Math.min(1, (t - start) / 900);
+    $('#scoreNum').textContent = Math.round(pct * (1 - Math.pow(1 - p, 3)));
+    if (p < 1) requestAnimationFrame(count);
+  })(start);
+}
+
+$('#startTest').onclick = testStart;
+$('#testSubmit').onclick = testSubmit;
+$('#testQuit').onclick = () => { $('#testRun').hidden = true; $('#testSetup').hidden = false; };
+$('#testList').addEventListener('input', () => {
+  testFill();
+  const b = $('#testSubmit'); b.dataset.confirm = ''; b.textContent = 'Hand in ✓';
+});
+$('#testList').addEventListener('keydown', e => {
+  if (e.key !== 'Enter' || e.target.tagName !== 'INPUT') return;
+  e.preventDefault();
+  const all = [...document.querySelectorAll('#testList input')];
+  const next = all[all.indexOf(e.target) + 1];
+  next ? next.focus() : testSubmit();
+});
+
+/* ---------------- keyboard (flashcards) ---------------- */
+document.addEventListener('keydown', e => {
+  if (mode !== 'learn' || e.target.tagName === 'INPUT') return;
+  if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); learnEl.click(); }
+  if (e.key === 'ArrowRight') learnMove(1);
+  if (e.key === 'ArrowLeft') learnMove(-1);
+});
+</script>
+</body>
+</html>

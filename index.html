@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Learning Games</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!--
+  ===================== TABLE OF CONTENTS =====================
+  Add a topic or a game here. "path" is the folder of the game (with an index.html inside).
+-->
+<script type="application/json" id="catalog">
+[
+  {
+    "topic": "Angol",
+    "subtitle": "English",
+    "code": "EN",
+    "games": [
+      {
+        "title": "Rendhagyó igék",
+        "subtitle": "Irregular verbs",
+        "path": "angol/rendhagyo-igek/",
+        "description": "Flashcards, practice and a test for the three forms of 88 irregular English verbs.",
+        "tags": ["flashcards", "practice", "test"]
+      }
+    ]
+  }
+]
+</script>
+
+<style>
+:root{
+  --paper:#f2ede3; --paper-2:#e9e2d4; --card:#fffcf5;
+  --ink:#1c1a17; --ink-2:#5b5549; --ink-3:#8f8778; --line:#d8cfbd;
+  --accent:#e4572e; --rule:#c9d6e3;
+  --hard:5px 5px 0 var(--ink);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:var(--paper);
+  background-image:radial-gradient(rgba(28,26,23,.08) 1px, transparent 1.2px);
+  background-size:22px 22px;
+  color:var(--ink);font:16px/1.5 "IBM Plex Sans",system-ui,sans-serif;min-height:100vh;
+}
+.wrap{max-width:960px;margin:0 auto;padding:48px 16px 80px}
+header{display:flex;align-items:center;gap:18px;margin-bottom:12px}
+.mark{
+  width:58px;height:58px;border:2px solid var(--ink);border-radius:12px;background:var(--accent);flex:none;
+  display:grid;place-items:center;font:800 26px/1 "Fraunces",serif;color:var(--card);
+  box-shadow:3px 3px 0 var(--ink);transform:rotate(-4deg);
+}
+h1{font:800 clamp(32px,6vw,48px)/1 "Fraunces",serif;letter-spacing:-.025em;margin:0}
+.lead{color:var(--ink-2);max-width:560px;margin:14px 0 44px}
+.lead code{font:13px "IBM Plex Mono",monospace;background:var(--paper-2);padding:1px 6px;border-radius:4px}
+
+.topic{margin-bottom:44px;animation:rise .5s cubic-bezier(.2,1.1,.4,1) backwards}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}}
+.topic-head{display:flex;align-items:baseline;gap:12px;padding-bottom:10px;margin-bottom:20px;border-bottom:2px solid var(--ink)}
+.topic-head .code{font:500 12px "IBM Plex Mono",monospace;background:var(--ink);color:var(--card);padding:3px 8px;border-radius:5px;letter-spacing:.08em;transform:translateY(-4px)}
+.topic-head h2{font:600 30px/1 "Fraunces",serif;margin:0;letter-spacing:-.01em}
+.topic-head .en{font:italic 400 17px "Fraunces",serif;color:var(--ink-3)}
+.topic-head .count{margin-left:auto;font:500 12px "IBM Plex Mono",monospace;color:var(--ink-3)}
+
+.games{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:22px}
+.game{
+  position:relative;display:block;text-decoration:none;color:inherit;
+  background:
+    linear-gradient(var(--accent),var(--accent)) 0 44px/100% 2px no-repeat,
+    repeating-linear-gradient(to bottom,transparent 0 27px,var(--rule) 27px 28px) 0 44px/100% 100% no-repeat,
+    var(--card);
+  border:2px solid var(--ink);border-radius:14px;box-shadow:var(--hard);
+  padding:58px 20px 18px;min-height:210px;
+  transition:transform .25s cubic-bezier(.3,1.5,.5,1),box-shadow .25s;
+  animation:rise .5s cubic-bezier(.2,1.1,.4,1) backwards;
+}
+.game:hover{transform:translate(-3px,-4px) rotate(-.6deg);box-shadow:8px 9px 0 var(--ink)}
+.game:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+.game .no{position:absolute;top:13px;left:18px;font:500 11px "IBM Plex Mono",monospace;color:var(--ink-3);letter-spacing:.1em}
+.game .go{position:absolute;top:9px;right:14px;font:600 18px/1 "IBM Plex Sans",sans-serif;transition:transform .25s}
+.game:hover .go{transform:translateX(4px);color:var(--accent)}
+.game h3{font:600 26px/1.1 "Fraunces",serif;margin:0;background:var(--card);display:inline;box-decoration-break:clone;-webkit-box-decoration-break:clone;padding-right:6px}
+.game .sub{display:block;font:italic 400 16px "Fraunces",serif;color:var(--ink-2);margin:6px 0 10px}
+.game p{margin:0 0 14px;font-size:14px;color:var(--ink-2);background:var(--card)}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tags span{font:500 11px "IBM Plex Mono",monospace;border:1.5px solid var(--line);border-radius:999px;padding:2px 9px;background:var(--card)}
+footer{margin-top:60px;font:12px "IBM Plex Mono",monospace;color:var(--ink-3)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="mark">L</div>
+    <h1>Learning Games</h1>
+  </header>
+  <p class="lead">Small games for practising school topics. Pick a topic, then a game.</p>
+  <main id="toc"></main>
+  <footer id="foot"></footer>
+</div>
+<script>
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const catalog = JSON.parse(document.getElementById('catalog').textContent);
+let delay = 0, total = 0;
+document.getElementById('toc').innerHTML = catalog.map(t => `
+  <section class="topic" style="animation-delay:${delay}ms">
+    <div class="topic-head">
+      ${t.code ? `<span class="code">${esc(t.code)}</span>` : ''}
+      <h2>${esc(t.topic)}</h2>
+      ${t.subtitle ? `<span class="en">${esc(t.subtitle)}</span>` : ''}
+      <span class="count">${t.games.length} game${t.games.length === 1 ? '' : 's'}</span>
+    </div>
+    <div class="games">
+      ${t.games.map((g, i) => (total++, `
+        <a class="game" href="${esc(g.path)}" style="animation-delay:${(delay += 70)}ms">
+          <span class="no">${String(i + 1).padStart(2, '0')}</span><span class="go">→</span>
+          <h3>${esc(g.title)}</h3>
+          ${g.subtitle ? `<span class="sub">${esc(g.subtitle)}</span>` : ''}
+          ${g.description ? `<p>${esc(g.description)}</p>` : ''}
+          ${g.tags ? `<div class="tags">${g.tags.map(x => `<span>${esc(x)}</span>`).join('')}</div>` : ''}
+        </a>`)).join('')}
+    </div>
+  </section>`).join('');
+document.getElementById('foot').textContent = `${catalog.length} topic${catalog.length === 1 ? '' : 's'} · ${total} game${total === 1 ? '' : 's'}`;
+</script>
+</body>
+</html>
