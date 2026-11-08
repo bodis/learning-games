@@ -130,7 +130,7 @@ const QUIZ_DATA = {
             {
               id: "nl_a",
               label: "a)",
-              min: -20, max: 25,
+              min: -15, max: 25,
               step: 5,
               known: [{ val: 0, label: "0" }, { val: 10, label: "10" }],
               points: [
@@ -142,7 +142,7 @@ const QUIZ_DATA = {
             {
               id: "nl_b",
               label: "b)",
-              min: 1050, max: 1450,
+              min: 1100, max: 1450,
               step: 50,
               known: [{ val: 1150, label: "1150" }, { val: 1300, label: "1300" }],
               points: [
@@ -156,7 +156,7 @@ const QUIZ_DATA = {
             {
               id: "nl_c",
               label: "c)",
-              min: -5, max: 45,
+              min: 0, max: 45,
               step: 3,
               known: [{ val: 12, label: "12" }, { val: 21, label: "21" }],
               points: [
@@ -169,7 +169,7 @@ const QUIZ_DATA = {
             {
               id: "nl_d",
               label: "d)",
-              min: 0, max: 35,
+              min: 1, max: 37,
               step: 4,
               known: [{ val: 5, label: "5" }, { val: 29, label: "29" }],
               points: [

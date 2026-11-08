@@ -97,9 +97,9 @@ const QUIZ_CONFIG = {
     const step = lineDef.step;
     
     const svgWidth = 840;
-    const svgHeight = 110;
-    const padX = 50;
-    const axisY = 65;
+    const svgHeight = 115;
+    const padX = 55;
+    const axisY = 62;
     const usableWidth = svgWidth - 2 * padX;
     const totalSpan = max - min;
     
@@ -115,33 +115,36 @@ const QUIZ_CONFIG = {
       </marker>
     </defs>`;
 
-    // Fő tengely
-    svgHtml += `<line x1="${padX - 15}" y1="${axisY}" x2="${svgWidth - padX + 15}" y2="${axisY}" 
+    // Fő tengely (25px-rel túlnyúlik a két szélső beosztáson a nyilak felé)
+    svgHtml += `<line x1="${padX - 25}" y1="${axisY}" x2="${svgWidth - padX + 25}" y2="${axisY}" 
                       stroke="#1e1b18" stroke-width="2" 
                       marker-start="url(#arrow-start-${lineDef.id})" 
                       marker-end="url(#arrow-end-${lineDef.id})" />`;
 
-    // Beosztások
-    for (let val = min; val <= max; val += step) {
+    // Beosztások (Ticks) - pontosan a feladat értékein
+    for (let val = min; val <= max + 0.0001; val += step) {
+      const roundedVal = Math.round(val);
       const x = getX(val);
-      const isKnown = lineDef.known.some(k => k.val === val);
-      const isPoint = lineDef.points.some(p => p.val === val);
-      const tickH = isKnown || isPoint ? 14 : 9;
+      const isKnown = lineDef.known.some(k => k.val === roundedVal);
+      const isPoint = lineDef.points.some(p => p.val === roundedVal);
+      const tickH = isKnown ? 18 : (isPoint ? 16 : 10);
+      const strokeW = isKnown ? "2.2" : (isPoint ? "1.8" : "1.4");
+      const strokeColor = isKnown ? "#1e1b18" : "#453f38";
       
-      svgHtml += `<line x1="${x}" y1="${axisY - tickH / 2}" x2="${x}" y2="${axisY + tickH / 2}" stroke="#5e574d" stroke-width="1.6" />`;
+      svgHtml += `<line x1="${x}" y1="${axisY - tickH / 2}" x2="${x}" y2="${axisY + tickH / 2}" stroke="${strokeColor}" stroke-width="${strokeW}" stroke-linecap="round" />`;
     }
 
-    // Ismert számok a tengely alatt
+    // Ismert számok a tengely alatt, pontosan a megfelelő vonás alá igazítva
     lineDef.known.forEach(k => {
       const x = getX(k.val);
-      svgHtml += `<text x="${x}" y="${axisY + 24}" font-family="'IBM Plex Mono', monospace" font-size="14" font-weight="600" fill="#1e1b18" text-anchor="middle">${k.label}</text>`;
+      svgHtml += `<text x="${x}" y="${axisY + 26}" font-family="'IBM Plex Mono', monospace" font-size="15" font-weight="700" fill="#1e1b18" text-anchor="middle">${k.label}</text>`;
     });
 
-    // Keresett pontok (piros körök és betűk a tengely felett)
+    // Keresett pontok (piros körök és betűk a tengely felett, pontosan a vonáson)
     lineDef.points.forEach(p => {
       const x = getX(p.val);
-      svgHtml += `<circle cx="${x}" cy="${axisY}" r="5.5" fill="#d84a1b" stroke="#1e1b18" stroke-width="1.8" />`;
-      svgHtml += `<text x="${x}" y="${axisY - 14}" font-family="'Fraunces', serif" font-size="16" font-weight="700" fill="#d84a1b" text-anchor="middle">${p.name}</text>`;
+      svgHtml += `<circle cx="${x}" cy="${axisY}" r="6" fill="#d84a1b" stroke="#1e1b18" stroke-width="2" />`;
+      svgHtml += `<text x="${x}" y="${axisY - 14}" font-family="'Fraunces', serif" font-size="17" font-weight="800" fill="#d84a1b" text-anchor="middle">${p.name}</text>`;
     });
 
     svgHtml += `</svg>`;
