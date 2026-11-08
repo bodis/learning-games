@@ -1,0 +1,867 @@
+/* ===================================================================
+   5. OSZTÁLYOS MATEMATIKA TÉMAZÁRÓ GYAKORLÓ - STÍLUSLAP
+   Design nyelv: Könyvtári / iskolai füzet esztétika, reszponzív, print-ready
+   =================================================================== */
+
+:root {
+  --paper: #f4efe6;
+  --paper-2: #eae3d5;
+  --paper-card: #fffdfa;
+  --ink: #1e1b18;
+  --ink-muted: #5e574d;
+  --ink-faint: #91897c;
+  --line: #dcd3c2;
+  --line-strong: #c2b6a0;
+  
+  --accent: #d84a1b;
+  --accent-soft: #fdeee9;
+  --blue: #1d638f;
+  --blue-soft: #edf5fa;
+  --green: #257846;
+  --green-soft: #eaf6ee;
+  --red: #c52828;
+  --red-soft: #fdeeed;
+  --amber: #b26800;
+  --amber-soft: #fdf6ea;
+  
+  --shadow-sm: 2px 2px 0 var(--ink);
+  --shadow-md: 4px 4px 0 var(--ink);
+  --shadow-lg: 7px 7px 0 var(--ink);
+  
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--paper);
+  background-image: radial-gradient(rgba(30, 27, 24, 0.08) 1.2px, transparent 1.2px);
+  background-size: 24px 24px;
+  color: var(--ink);
+  font: 16px/1.6 "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+}
+
+/* ================== FEJLÉC ÉS STICKY ESZKÖZTÁR ================== */
+.top-nav {
+  background: var(--paper-2);
+  border-bottom: 2px solid var(--ink);
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 13px;
+}
+
+.top-nav a {
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--paper-card);
+  border: 1.5px solid var(--ink);
+  box-shadow: var(--shadow-sm);
+  transition: transform .15s, box-shadow .15s;
+}
+
+.top-nav a:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
+.top-nav .nav-badge {
+  background: var(--ink);
+  color: var(--paper-card);
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+/* Rögzített ellenőrző és statisztika sáv */
+.sticky-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 253, 250, 0.94);
+  backdrop-filter: blur(8px);
+  border-bottom: 2px solid var(--ink);
+  padding: 12px 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.sticky-inner {
+  max-width: 1040px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.score-summary {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.score-title {
+  font-family: "Fraunces", serif;
+  font-weight: 700;
+  font-size: 19px;
+}
+
+.score-pill {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 14px;
+  background: var(--paper-2);
+  border: 1.5px solid var(--line-strong);
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+.score-pill strong {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.sticky-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ================== GOMBOK ÉS VEZÉRLŐK ================== */
+.btn {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--ink);
+  background: var(--paper-card);
+  color: var(--ink);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  box-shadow: var(--shadow-sm);
+  transition: transform .12s, box-shadow .12s, background .15s;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
+.btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 var(--ink);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--ink);
+}
+.btn-primary:hover {
+  background: #c73e12;
+}
+
+.btn-ai {
+  background: #392b58;
+  color: #f7edff;
+  border-color: var(--ink);
+}
+.btn-ai:hover {
+  background: #4a3872;
+}
+
+.btn-secondary {
+  background: var(--paper-2);
+}
+
+.btn-sm {
+  font-size: 12px;
+  padding: 4px 10px;
+}
+
+/* ================== TARTALOM WRAPPER ================== */
+.container {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 28px 16px 80px;
+}
+
+.hero {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.hero-meta {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 13px;
+  color: var(--ink-faint);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.hero h1 {
+  font: 800 clamp(28px, 4.5vw, 40px)/1.15 "Fraunces", serif;
+  margin: 0 0 10px;
+  letter-spacing: -0.02em;
+}
+
+.hero p {
+  margin: 0;
+  color: var(--ink-muted);
+  max-width: 760px;
+  font-size: 16px;
+}
+
+/* Nyomtatási diák fejléc mező (képernyőn rejtve, nyomtatásban megjelenik) */
+.print-student-header {
+  display: none;
+}
+
+/* ================== FELADATBLOKKOK ================== */
+.quiz-block {
+  background: var(--paper-card);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  margin-bottom: 36px;
+  overflow: hidden;
+  transition: box-shadow .2s;
+}
+
+.block-header {
+  background: var(--paper-2);
+  border-bottom: 2px solid var(--ink);
+  padding: 16px 22px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.block-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.block-num {
+  font: 800 24px/1 "Fraunces", serif;
+  background: var(--ink);
+  color: var(--paper-card);
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.block-title {
+  font: 700 22px/1.2 "Fraunces", serif;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.block-badge {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11.5px;
+  font-weight: 500;
+  background: var(--paper-card);
+  border: 1px solid var(--line-strong);
+  padding: 2px 8px;
+  border-radius: 999px;
+  color: var(--ink-muted);
+}
+
+.block-score {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--paper-card);
+  border: 1.5px solid var(--ink);
+}
+
+.block-body {
+  padding: 22px;
+}
+
+.block-desc {
+  margin: 0 0 16px;
+  color: var(--ink-muted);
+  font-size: 15px;
+}
+
+/* Szabály / Tipp lenyíló fül */
+.rule-box {
+  background: var(--amber-soft);
+  border: 1.5px dashed var(--amber);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  margin-bottom: 22px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #5c3700;
+}
+
+.rule-box summary {
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  user-select: none;
+}
+
+.rule-box[open] summary {
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed rgba(178, 104, 0, 0.4);
+}
+
+/* ================== TASKS ÉS FELADATSOROK ================== */
+.task-group {
+  margin-bottom: 28px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--line);
+}
+.task-group:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.task-group-title {
+  font: 600 17px/1.3 "Fraunces", serif;
+  margin: 0 0 4px;
+}
+
+.task-group-inst {
+  font-size: 13.5px;
+  color: var(--ink-faint);
+  margin: 0 0 16px;
+}
+
+/* Rács elrendezés a kérdésekhez */
+.grid-questions {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.grid-questions-wide {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 16px;
+}
+
+.q-item {
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: border-color .15s, background .15s;
+}
+
+.q-item:focus-within {
+  border-color: var(--blue);
+  background: #fff;
+}
+
+.q-prompt-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 15px;
+}
+
+.q-label {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+
+.q-prompt {
+  font-weight: 500;
+  color: var(--ink);
+  word-break: break-word;
+}
+
+.q-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.q-input {
+  flex: 1;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 15px;
+  padding: 6px 10px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  color: var(--ink);
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+.q-input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(29, 99, 143, 0.15);
+}
+
+/* Állapotok ellenőrzés után */
+.q-item.is-correct {
+  border-color: var(--green);
+  background: var(--green-soft);
+}
+.q-item.is-correct .q-input {
+  border-color: var(--green);
+  background: #fff;
+  font-weight: 600;
+}
+
+.q-item.is-wrong {
+  border-color: var(--red);
+  background: var(--red-soft);
+}
+.q-item.is-wrong .q-input {
+  border-color: var(--red);
+  background: #fff;
+}
+
+.q-feedback {
+  display: none;
+  font-size: 12.5px;
+  line-height: 1.4;
+  margin-top: 4px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--line);
+}
+
+.q-item.is-wrong .q-feedback {
+  display: block;
+  color: var(--red);
+}
+.q-item.is-correct .q-feedback {
+  display: block;
+  color: var(--green);
+}
+
+.q-feedback strong {
+  display: inline-block;
+  font-weight: 600;
+}
+
+.q-explanation {
+  color: var(--ink-muted);
+  font-style: italic;
+  margin-top: 2px;
+}
+
+/* ================== SZÁMEGYENES ELEMEK ================== */
+.numberline-card {
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  margin-bottom: 18px;
+}
+
+.numberline-card h4 {
+  font-family: "Fraunces", serif;
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+
+.numberline-svg-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+}
+
+.numberline-svg {
+  display: block;
+  min-width: 520px;
+  width: 100%;
+  height: auto;
+}
+
+.numberline-inputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 10px;
+}
+
+.nl-input-unit {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 14px;
+}
+
+/* ================== VÁLASZTÓS HALMAZOK (INTERVALS) ================== */
+.interval-card {
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  margin-bottom: 12px;
+}
+
+.interval-desc {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: var(--ink);
+}
+
+.interval-select {
+  width: 100%;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 14px;
+  padding: 8px 10px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  color: var(--ink);
+}
+
+/* ================== BLOKK LÁBLÉC GOMBOK ================== */
+.block-footer {
+  background: var(--paper-2);
+  border-top: 2px solid var(--ink);
+  padding: 14px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.block-footer-left {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.block-footer-status {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+
+/* ================== MODAL (AI EXPORT & SEGÉDLETEK) ================== */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 27, 24, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  place-items: center;
+  padding: 16px;
+}
+
+.modal-overlay.is-active {
+  display: grid;
+}
+
+.modal-card {
+  background: var(--paper-card);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  max-width: 680px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalPop .2s cubic-bezier(.2,1.2,.4,1);
+}
+
+@keyframes modalPop {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modal-header {
+  background: var(--paper-2);
+  border-bottom: 2px solid var(--ink);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-header h3 {
+  font: 700 20px/1 "Fraunces", serif;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+  color: var(--ink-muted);
+}
+
+.modal-close:hover {
+  color: var(--ink);
+}
+
+.modal-body {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.modal-lead {
+  font-size: 14px;
+  color: var(--ink-muted);
+  margin-top: 0;
+  margin-bottom: 14px;
+}
+
+.ai-prompt-box {
+  width: 100%;
+  min-height: 240px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12.5px;
+  line-height: 1.5;
+  background: var(--paper);
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  color: var(--ink);
+  resize: vertical;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.modal-footer {
+  background: var(--paper-2);
+  border-top: 1.5px solid var(--line-strong);
+  padding: 12px 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  align-items: center;
+}
+
+.copy-toast {
+  font-size: 12.5px;
+  font-family: "IBM Plex Mono", monospace;
+  color: var(--green);
+  font-weight: 600;
+  display: none;
+}
+
+.copy-toast.is-shown {
+  display: inline-block;
+}
+
+/* ================== NYOMTATÁSI BEÁLLÍTÁSOK (@media print) ================== */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 15mm 12mm 15mm 12mm;
+  }
+  
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 12pt;
+    line-height: 1.4;
+  }
+
+  /* Elrejtendő elemek nyomtatáskor */
+  .top-nav,
+  .sticky-bar,
+  .btn,
+  .block-footer,
+  .rule-box,
+  .modal-overlay,
+  .q-feedback,
+  .copy-toast {
+    display: none !important;
+  }
+
+  .container {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Nyomtatási fejléc a diáknak */
+  .print-student-header {
+    display: block !important;
+    border: 2px solid #000;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+  }
+
+  .print-student-header h2 {
+    font-family: "Fraunces", serif;
+    font-size: 18pt;
+    margin: 0 0 4px;
+    text-align: center;
+  }
+
+  .print-student-header .print-sub {
+    font-size: 11pt;
+    text-align: center;
+    margin-bottom: 12px;
+    color: #333;
+  }
+
+  .print-fields-row {
+    display: flex;
+    justify-content: space-between;
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 11pt;
+    margin-top: 8px;
+  }
+
+  .print-field {
+    border-bottom: 1.5px dotted #000;
+    display: inline-block;
+    min-width: 140px;
+    height: 18px;
+  }
+
+  .hero {
+    display: none !important;
+  }
+
+  /* Feladatblokkok nyomtatáskor */
+  .quiz-block {
+    background: #fff !important;
+    border: 1.5px solid #000 !important;
+    box-shadow: none !important;
+    margin-bottom: 22px !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .block-header {
+    background: #f0f0f0 !important;
+    border-bottom: 1.5px solid #000 !important;
+    padding: 8px 14px !important;
+  }
+
+  .block-num {
+    background: #000 !important;
+    color: #fff !important;
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 14pt !important;
+  }
+
+  .block-title {
+    font-size: 14pt !important;
+  }
+
+  .block-score {
+    display: none !important;
+  }
+
+  .block-body {
+    padding: 14px !important;
+  }
+
+  .task-group {
+    margin-bottom: 14px !important;
+    padding-bottom: 10px !important;
+  }
+
+  .task-group-title {
+    font-size: 12pt !important;
+  }
+
+  /* Inputok kitöltő vonallá válnak a nyomtatásban */
+  body:not(.print-with-answers) .q-input {
+    border: none !important;
+    border-bottom: 1.5px dotted #555 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: transparent !important;
+    box-shadow: none !important;
+    min-width: 90px;
+  }
+
+  /* Ha javítókulcsot nyomtatnak */
+  body.print-with-answers .q-input {
+    border: 1px solid #aaa !important;
+    background: #fafafa !important;
+    color: #000 !important;
+    font-weight: 700;
+  }
+
+  body.print-with-answers .q-feedback {
+    display: block !important;
+    color: #000 !important;
+  }
+
+  .q-item {
+    background: #fff !important;
+    border: 1px solid #ccc !important;
+    box-shadow: none !important;
+    padding: 6px 10px !important;
+  }
+
+  .numberline-card {
+    border: 1px solid #aaa !important;
+    padding: 10px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .interval-select {
+    border: 1px solid #888 !important;
+  }
+}

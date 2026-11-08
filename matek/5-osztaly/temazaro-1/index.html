@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>5. Osztályos Matematika Témazáró Gyakorló</title>
+  
+  <!-- Tipográfia -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Felső navigáció -->
+  <nav class="top-nav">
+    <a href="../../../index.html">← Főoldal (Tantárgyak)</a>
+    <span class="nav-badge">MATEMATIKA · 5. OSZTÁLY</span>
+  </nav>
+
+  <!-- Rögzített ellenőrző és statisztika sáv -->
+  <header class="sticky-bar">
+    <div class="sticky-inner">
+      <div class="score-summary">
+        <span class="score-title">1. Témazáró</span>
+        <span class="score-pill">Kitöltve: <strong id="filled-count">0 / ?</strong></span>
+        <span class="score-pill">Eredmény: <span id="total-score">0 / ? pont</span></span>
+      </div>
+
+      <div class="sticky-actions">
+        <button type="button" class="btn btn-primary" onclick="window.quizApp.checkAll()">
+          ✓ Teljes dolgozat ellenőrzése
+        </button>
+
+        <button type="button" class="btn btn-ai" onclick="window.quizApp.exportAllToAI()">
+          🤖 AI Tanácsadó Export
+        </button>
+
+        <div style="display: inline-flex; gap: 4px;">
+          <button type="button" class="btn btn-secondary" onclick="window.quizApp.printBlank()" title="Üres feladatlap nyomtatása a diáknak">
+            🖨️ Nyomtatás (Üres)
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="window.quizApp.printKey()" title="Megoldókulcs nyomtatása">
+            🔑 Megoldókulcs
+          </button>
+        </div>
+
+        <button type="button" class="btn btn-secondary btn-sm" onclick="window.quizApp.resetAll()" title="Minden válasz törlése és újrakezdés">
+          🔄 Újra
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Nyomtatási diák fejléc (képernyőn rejtve, papíron megjelenik) -->
+    <div class="print-student-header">
+      <h2>Matematika 5. osztály — 1. Témazáró dolgozat</h2>
+      <div class="print-sub">Természetes számok, helyiérték, számegyenes, fejszámolási műveletek, műveleti sorrend</div>
+      <div class="print-fields-row">
+        <div><strong>Név:</strong> <span class="print-field" style="min-width: 220px;"></span></div>
+        <div><strong>Osztály:</strong> <span class="print-field" style="min-width: 60px;">5.</span></div>
+        <div><strong>Dátum:</strong> <span class="print-field" style="min-width: 120px;">202___ . ___ . ___</span></div>
+      </div>
+      <div class="print-fields-row" style="margin-top: 14px;">
+        <div><strong>Elért pontszám:</strong> <span class="print-field" style="min-width: 100px;"></span> / <span id="print-max-pts">65</span> pont</div>
+        <div><strong>Százalék:</strong> <span class="print-field" style="min-width: 80px;"></span> %</div>
+        <div><strong>Érdemjegy:</strong> <span class="print-field" style="min-width: 80px;"></span></div>
+      </div>
+    </div>
+
+    <!-- Webes bevezető -->
+    <section class="hero">
+      <div class="hero-meta">Interaktív & Nyomtatható felkészítő teszt</div>
+      <h1>5. Osztályos Matematika 1. Témazáró</h1>
+      <p>
+        Gyakorló feladatsor a dolgozat feladatai alapján. Töltsd ki a mezőket, ellenőrizd az eredményt
+        <strong>blokkonként</strong> vagy <strong>egyben</strong>! A hibák elemzéséhez egy kattintással kimásolhatod az adatokat egy mesterséges intelligencia számára (pl. ChatGPT, Gemini, Claude).
+      </p>
+    </section>
+
+    <!-- Dinamikusan renderelt feladatblokkok konténere -->
+    <div id="quiz-container">
+      <!-- Az app.js tölti fel a data.js alapján -->
+    </div>
+  </main>
+
+  <!-- AI EXPORT MODAL -->
+  <div class="modal-overlay" id="ai-modal" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <header class="modal-header">
+        <h3>🤖 Eredmények exportálása AI Tanácsadónak</h3>
+        <button type="button" class="modal-close" onclick="window.quizApp.closeModal()" aria-label="Bezárás">&times;</button>
+      </header>
+
+      <div class="modal-body">
+        <p class="modal-lead">
+          Az alábbi mezőben összeállítottunk egy személyre szabott szöveget a dolgozatod eredményeivel, a hibáiddal és a szabályokkal.
+          <strong>Kattints a másolás gombra</strong>, majd illeszd be a kedvenc AI asszisztensedbe (vagy ide a chatbe), hogy azonnal elmagyarázza a lépéseket és segítsen javítani!
+        </p>
+
+        <div style="display: flex; gap: 16px; margin-bottom: 12px; font-size: 13.5px; flex-wrap: wrap;">
+          <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 500;">
+            <input type="radio" name="export-filter" value="mistakes_only" checked onchange="window.quizApp.setExportFilter('mistakes_only')">
+            <span>Csak a hibás feladatok elemzése (Ajánlott)</span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 500;">
+            <input type="radio" name="export-filter" value="all" onchange="window.quizApp.setExportFilter('all')">
+            <span>Minden feladat (helyesekkel együtt)</span>
+          </label>
+        </div>
+
+        <textarea class="ai-prompt-box" id="ai-prompt-content" readonly spellcheck="false"></textarea>
+      </div>
+
+      <footer class="modal-footer">
+        <span class="copy-toast" id="copy-toast">✓ Sikeresen kimásolva a vágólapra!</span>
+        <button type="button" class="btn btn-secondary" onclick="window.quizApp.closeModal()">Bezárás</button>
+        <button type="button" class="btn btn-primary" onclick="window.quizApp.copyPromptToClipboard()">📋 Másolás a vágólapra</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Adat és logika betöltése -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
