@@ -37,6 +37,11 @@
   box-sizing: border-box;
 }
 
+input, select, textarea {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -374,14 +379,16 @@ body {
 /* Rács elrendezés a kérdésekhez */
 .grid-questions {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
   gap: 14px;
+  width: 100%;
 }
 
 .grid-questions-wide {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
   gap: 16px;
+  width: 100%;
 }
 
 .q-item {
@@ -392,6 +399,9 @@ body {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  min-width: 0;
+  overflow: hidden;
+  box-sizing: border-box;
   transition: border-color .15s, background .15s;
 }
 
@@ -405,6 +415,8 @@ body {
   align-items: baseline;
   gap: 8px;
   font-size: 15px;
+  flex-wrap: wrap;
+  min-width: 0;
 }
 
 .q-label {
@@ -412,22 +424,30 @@ body {
   font-size: 13px;
   font-weight: 600;
   color: var(--ink-muted);
+  flex-shrink: 0;
 }
 
 .q-prompt {
   font-weight: 500;
   color: var(--ink);
   word-break: break-word;
+  overflow-wrap: break-word;
+  min-width: 0;
 }
 
 .q-input-wrap {
   display: flex;
   align-items: center;
   gap: 8px;
+  width: 100%;
+  min-width: 0;
 }
 
 .q-input {
-  flex: 1;
+  flex: 1 1 0%;
+  min-width: 0; /* Megakadályozza a szülő túlfeszítését */
+  width: 100%;
+  box-sizing: border-box;
   font-family: "IBM Plex Mono", monospace;
   font-size: 15px;
   padding: 6px 10px;
@@ -471,6 +491,7 @@ body {
   margin-top: 4px;
   padding-top: 6px;
   border-top: 1px dashed var(--line);
+  word-break: break-word;
 }
 
 .q-item.is-wrong .q-feedback {
@@ -500,6 +521,9 @@ body {
   border-radius: var(--radius-sm);
   padding: 16px;
   margin-bottom: 18px;
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .numberline-card h4 {
@@ -511,8 +535,9 @@ body {
 .numberline-svg-wrap {
   width: 100%;
   overflow-x: auto;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   padding-bottom: 6px;
+  -webkit-overflow-scrolling: touch;
 }
 
 .numberline-svg {
@@ -524,16 +549,47 @@ body {
 
 .numberline-inputs {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
   gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.nl-q-item {
+  padding: 8px 10px;
 }
 
 .nl-input-unit {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-family: "IBM Plex Mono", monospace;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+}
+
+.nl-point-badge {
+  font-family: "Fraunces", serif;
+  font-weight: 700;
   font-size: 14px;
+  color: #fff;
+  background: var(--accent);
+  border: 1.5px solid var(--ink);
+  border-radius: 6px;
+  min-width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 1;
+  box-shadow: 1.5px 1.5px 0 var(--ink);
+}
+
+.nl-input {
+  min-width: 0;
+  width: 100%;
+  font-size: 14px;
+  padding: 5px 8px;
 }
 
 /* ================== VÁLASZTÓS HALMAZOK (INTERVALS) ================== */
@@ -703,6 +759,106 @@ body {
 
 .copy-toast.is-shown {
   display: inline-block;
+}
+
+/* ================== RESZPONZÍV IGAZÍTÁSOK (MOBIL & TABLET) ================== */
+@media (max-width: 768px) {
+  .top-nav {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .container {
+    padding: 16px 12px 60px;
+  }
+
+  .sticky-bar {
+    padding: 10px 12px;
+  }
+
+  .sticky-inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .score-summary {
+    justify-content: space-between;
+    width: 100%;
+    font-size: 13.5px;
+  }
+
+  .score-title {
+    font-size: 16px;
+  }
+
+  .sticky-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    width: 100%;
+  }
+
+  .sticky-actions .btn {
+    justify-content: center;
+    padding: 7px 8px;
+    font-size: 12px;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .block-header {
+    padding: 12px 14px;
+  }
+
+  .block-body {
+    padding: 14px;
+  }
+
+  .block-footer {
+    padding: 12px 14px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .block-footer-left {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  .block-footer-left .btn {
+    justify-content: center;
+    padding: 6px 8px;
+    font-size: 12px;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .block-footer-status {
+    text-align: center;
+  }
+
+  .numberline-inputs {
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sticky-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .block-footer-left {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-questions,
+  .grid-questions-wide {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ================== NYOMTATÁSI BEÁLLÍTÁSOK (@media print) ================== */

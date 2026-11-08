@@ -221,10 +221,10 @@ const QUIZ_CONFIG = {
             </div>
             <div class="numberline-inputs">
               ${line.points.map(p => `
-                <div class="q-item" data-q-id="${p.id}" data-expected="${p.val}" data-parent-title="${line.label} Számegyenes">
+                <div class="q-item nl-q-item" data-q-id="${p.id}" data-expected="${p.val}" data-point-name="${p.name}" data-parent-title="${line.label} Számegyenes">
                   <div class="nl-input-unit">
-                    <label for="input-${p.id}">${p.label}</label>
-                    <input type="text" id="input-${p.id}" class="q-input" data-qid="${p.id}" placeholder="érték...">
+                    <span class="nl-point-badge" title="${p.name} pont">${p.name}</span>
+                    <input type="text" id="input-${p.id}" class="q-input nl-input" data-qid="${p.id}" placeholder="érték..." aria-label="${p.name} pont értéke">
                   </div>
                   <div class="q-feedback">
                     <strong>Helyes: ${p.val}</strong>
@@ -517,7 +517,8 @@ const QUIZ_CONFIG = {
         const input = item.querySelector('.q-input');
         const userVal = input ? input.value : '';
         const parentTitle = item.dataset.parentTitle ? ` (${item.dataset.parentTitle})` : '';
-        const promptText = (item.querySelector('.q-prompt')?.textContent || item.querySelector('label')?.textContent || item.querySelector('.interval-desc')?.textContent || qid) + parentTitle;
+        const pointLabel = item.dataset.pointName ? `${item.dataset.pointName} pont:` : '';
+        const promptText = (item.querySelector('.q-prompt')?.textContent || pointLabel || item.querySelector('label')?.textContent || item.querySelector('.interval-desc')?.textContent || qid) + parentTitle;
         const explanation = item.querySelector('.q-explanation')?.textContent || '';
 
         grandTotal++;
